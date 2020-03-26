@@ -1,8 +1,9 @@
-from typing import re
-
-from selenium.webdriver.common.by import By
 import random
 import string
+import re
+import os
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 
 class HomePage:
@@ -25,8 +26,9 @@ class HomePage:
     errase = (By.XPATH, '//*[@id="top"]/div[5]/div/div/div[3]/button[1]')
     disabled = (By.XPATH, '//*[@id="content"]/div[2]/div/div/form/div[3]/button')
 
+    # /code/example.jpg"
     def creation(self):
-        self.driver.find_element(*HomePage.image).send_keys("/code/example.jpg")
+        self.driver.find_element(*HomePage.image).send_keys("C:\Files\example.jpg")
         self.driver.find_element(*HomePage.text).send_keys("This is an example")
         self.driver.find_element(*HomePage.create).click()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -40,7 +42,7 @@ class HomePage:
         self.driver.implicitly_wait(30)
 
     def count(self):
-        self.driver.find_element(*HomePage.image).send_keys("/code/example.jpg")
+        self.driver.find_element(*HomePage.image).send_keys("C:\Files\example.jpg")
         letters = self.generateString()
         self.driver.find_element(*HomePage.text).send_keys(letters)
         checkbutton = self.driver.find_element(*HomePage.disabled)
@@ -54,8 +56,19 @@ class HomePage:
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.implicitly_wait(30)
         self.driver.find_element(*HomePage.delete).click()
-        self.driver.implicitly_wait(30)
-        self.driver.find_element(*HomePage.modal).click()
+
+
+
+
+        # media = self.driver.find_element(*HomePage.body)
+        #deleted = self.driver.find_element(*HomePage.modal)
+
+         #   self.driver.find_element(*HomePage.errase).click()
+
+
+        # self.driver.find_element(*HomePage.delete).click()
+        # self.driver.implicitly_wait(30)
+        # self.driver.find_element(*HomePage.modal).click()
 
     def presentitem(self):
         src = self.driver.page_source
