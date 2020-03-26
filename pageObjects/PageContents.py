@@ -18,16 +18,14 @@ class HomePage:
     edit = (By.XPATH, '//button[contains(text(),"Edit")]')
     text = (By.CSS_SELECTOR, 'textarea.form-control')
     confirm = (By.XPATH, '//button[contains(text(),"Update Item")]')
-    body = (By.CLASS_NAME, 'media-left')
+    body = (By.CLASS_NAME, 'media-body')
     delete = (By.XPATH, '//button[contains(text(),"Delete")]')
     modal = (By.CSS_SELECTOR, 'modal-content')
-    errase = (By.XPATH, '//*[@id="top"]/div[5]/div/div/div[3]/button[1]')
+    errase = (By.XPATH, '//button[containts(text(),"Yes, delete it!")')
     disabled = (By.XPATH, '//*[@id="content"]/div[2]/div/div/form/div[3]/button')
-    area = (By.CSS_SELECTOR, 'textarea.ng-maxlength')
 
-    # /code/example.jpg"
     def creation(self):
-        self.driver.find_element(*HomePage.image).send_keys("C:\Files\example.jpg")
+        self.driver.find_element(*HomePage.image).send_keys("/code/example.jpg")
         self.driver.find_element(*HomePage.text).send_keys("This is an example")
         self.driver.find_element(*HomePage.create).click()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -41,7 +39,7 @@ class HomePage:
         self.driver.implicitly_wait(30)
 
     def count(self):
-        self.driver.find_element(*HomePage.image).send_keys("C:\Files\example.jpg")
+        self.driver.find_element(*HomePage.image).send_keys("/code/example.jpg")
         letters = self.generateString()
         self.driver.find_element(*HomePage.text).send_keys(letters)
         checkbutton = self.driver.find_element(*HomePage.disabled)
@@ -53,21 +51,17 @@ class HomePage:
 
     def deleting(self):
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+        item = self.driver.find_element(*HomePage.body)
         self.driver.implicitly_wait(30)
-        self.driver.find_element(*HomePage.delete).click()
-
-
-
-
-        # media = self.driver.find_element(*HomePage.body)
-        #deleted = self.driver.find_element(*HomePage.modal)
-
-         #   self.driver.find_element(*HomePage.errase).click()
-
-
-        # self.driver.find_element(*HomePage.delete).click()
-        # self.driver.implicitly_wait(30)
-        # self.driver.find_element(*HomePage.modal).click()
+        if item:
+            self.driver.find_element(*HomePage.delete).click()
+        else:
+            assert False
+        deleted = self.driver.find_element(*HomePage.modal)
+        if deleted:
+            self.driver.find_element(*HomePage.errase).click()
+        else:
+            assert False
 
     def presentitem(self):
         src = self.driver.page_source
