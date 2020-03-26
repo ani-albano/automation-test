@@ -1,8 +1,6 @@
 import random
 import string
 import re
-import os
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
@@ -11,7 +9,7 @@ class HomePage:
     def __init__(self, driver):
         self.driver = driver
 
-    def generateString(self, stringLength=301):
+    def generateString(self, stringLength=500):
         letters = string.ascii_letters
         return ''.join(random.choice(letters) for i in range(stringLength))
 
@@ -25,6 +23,7 @@ class HomePage:
     modal = (By.CSS_SELECTOR, 'modal-content')
     errase = (By.XPATH, '//*[@id="top"]/div[5]/div/div/div[3]/button[1]')
     disabled = (By.XPATH, '//*[@id="content"]/div[2]/div/div/form/div[3]/button')
+    area = (By.CSS_SELECTOR, 'textarea.ng-maxlength')
 
     # /code/example.jpg"
     def creation(self):
@@ -49,7 +48,7 @@ class HomePage:
         if checkbutton.is_enabled():
             assert False
         else:
-            assert True
+            assert len(letters)
         self.driver.implicitly_wait(30)
 
     def deleting(self):
