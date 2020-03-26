@@ -9,6 +9,10 @@ class TestCreate(BaseClass):
         create = HomePage(self.driver)
         create.creation()
 
+    def test_delete(self):
+        delete = HomePage(self.driver)
+        delete.deleting()
+
     def test_edit_item(self):
         edition = HomePage(self.driver)
         edition.edition()
@@ -17,6 +21,8 @@ class TestCreate(BaseClass):
         maxchar = HomePage(self.driver)
         maxchar.count()
 
-    def test_delete(self):
-        delete = HomePage(self.driver)
-        delete.deleting()
+    def test_present(self):
+        item = HomePage(self.driver)
+        item.presentitem()
+
+

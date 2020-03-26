@@ -1,3 +1,5 @@
+from typing import re
+
 from selenium.webdriver.common.by import By
 import random
 import string
@@ -12,16 +14,21 @@ class HomePage:
         letters = string.ascii_letters
         return ''.join(random.choice(letters) for i in range(stringLength))
 
-    edit = (By.XPATH, '//*[@id="content"]/div[1]/div/ul/li[1]/div/div/div[1]/button[1]')
+    image = (By.ID, 'inputImage')
+    create = (By.XPATH, '//button[contains(text(),"Create Item")]')
+    edit = (By.XPATH, '//button[contains(text(),"Edit")]')
     text = (By.CSS_SELECTOR, 'textarea.form-control')
-    confirm = (By.XPATH, '//*[@id="content"]/div[2]/div/div/form/div[3]/button[2]')
-    delete = (By.XPATH, '//*[@id="content"]/div[1]/div/ul/li[13]/div/div/div[1]/button[2]')
-    modal = (By.CSS_SELECTOR, 'button.btn.btn-primary')
+    confirm = (By.XPATH, '//button[contains(text(),"Update Item")]')
+    body = (By.CLASS_NAME, 'media-left')
+    delete = (By.XPATH, '//button[contains(text(),"Delete")]')
+    modal = (By.CSS_SELECTOR, 'modal-content')
+    errase = (By.XPATH, '//*[@id="top"]/div[5]/div/div/div[3]/button[1]')
+    disabled = (By.XPATH, '//*[@id="content"]/div[2]/div/div/form/div[3]/button')
 
     def creation(self):
-        self.driver.find_element_by_id("inputImage").send_keys("/code/example.jpg")
-        self.driver.find_element_by_css_selector('textarea.form-control').send_keys("This is an example")
-        self.driver.find_element_by_xpath('//*[@id="content"]/div[2]/div/div/form/div[3]/button').click()
+        self.driver.find_element(*HomePage.image).send_keys("/code/example.jpg")
+        self.driver.find_element(*HomePage.text).send_keys("This is an example")
+        self.driver.find_element(*HomePage.create).click()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.implicitly_wait(30)
 
@@ -33,8 +40,14 @@ class HomePage:
         self.driver.implicitly_wait(30)
 
     def count(self):
+        self.driver.find_element(*HomePage.image).send_keys("/code/example.jpg")
         letters = self.generateString()
         self.driver.find_element(*HomePage.text).send_keys(letters)
+        checkbutton = self.driver.find_element(*HomePage.disabled)
+        if checkbutton.is_enabled():
+            assert False
+        else:
+            assert True
         self.driver.implicitly_wait(30)
 
     def deleting(self):
@@ -43,3 +56,11 @@ class HomePage:
         self.driver.find_element(*HomePage.delete).click()
         self.driver.implicitly_wait(30)
         self.driver.find_element(*HomePage.modal).click()
+
+    def presentitem(self):
+        src = self.driver.page_source
+        text_found = re.search(r'assets/images/hawkins.jpg', src)
+        if text_found:
+            assert True
+        else:
+            assert False
