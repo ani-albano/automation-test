@@ -4,8 +4,6 @@ from selenium import webdriver
 driver = None
 
 
-# Pasar por consola el browser a usar, si no se especifica, por defecto usa Chrome
-
 def pytest_addoption(parser):
     parser.addoption(
         "--browser_name", action="store", default="chrome"
@@ -17,13 +15,12 @@ def setup(request):
     global driver
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--no-sandbox')
-#    chrome_options.add_argument('--window-size=1420,1080')
+    # chrome_options.add_argument('--window-size=1420,1080')
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     browser_name = request.config.getoption("browser_name")
     if browser_name == "chrome":
         driver = webdriver.Chrome(options=chrome_options)
-        # Arreglar después el runtime de Firefox
     elif browser_name == "firefox":
         driver = webdriver.Firefox()
     elif browser_name == "safari":
